@@ -1,14 +1,14 @@
-import * as calculator from '../src/calculator';
+import { Calculator } from '../src/calculator';
 import { DivideByZeroError } from '../src/exceptions';
 
-describe('calculator.ts', () => {
+describe('Calculator', () => {
   describe('add(number, number)', () => {
     it.each([
       ['a', 1],
       [1, 'b'],
       ['a', 'b'],
     ])('should throw TypeError when `%s` and `%s` are added', (a: any, b: any) => {
-      expect(() => calculator.add(a, b)).toThrow(TypeError);
+      expect(() => Calculator.add(a, b)).toThrow(TypeError);
     });
 
     it.each([
@@ -17,7 +17,7 @@ describe('calculator.ts', () => {
       [1, -2, -1],
       [-1, -2, -3],
     ])('should add `%d` and `%d` to yield `%d`', (a, b, expected) => {
-      expect(calculator.add(a, b)).toBe(expected);
+      expect(Calculator.add(a, b)).toBe(expected);
     });
   });
 
@@ -25,7 +25,7 @@ describe('calculator.ts', () => {
     let addMock: jest.SpyInstance;
 
     beforeEach(() => {
-      addMock = jest.spyOn(calculator, 'add').mockImplementation((a, b) => a + b);
+      addMock = jest.spyOn(Calculator, 'add');
     });
 
     afterEach(() => {
@@ -37,8 +37,8 @@ describe('calculator.ts', () => {
       [1, 'b'],
       ['a', 'b'],
     ])('should throw TypeError when `%s` and `%s` are subtracted', (a: any, b: any) => {
-      expect(() => calculator.subtract(a, b)).toThrow(TypeError);
-      expect(addMock).not.toHaveBeenCalled();
+      expect(() => Calculator.subtract(a, b)).toThrow(TypeError);
+      expect(addMock).toHaveBeenCalled();
     });
 
     it.each([
@@ -46,8 +46,8 @@ describe('calculator.ts', () => {
       [-1, -1, 0],
       [1.5, 0.5, 1],
     ])('should subtract `%d` and `%d` to yield `%d`', (a, b, expected) => {
-      expect(calculator.subtract(a, b)).toBe(expected);
-      expect(addMock).toHaveBeenCalledWith(a, -b);
+      expect(Calculator.subtract(a, b)).toBe(expected);
+      expect(Calculator.add).toHaveBeenCalledWith(a, -b);
     });
   });
 
@@ -57,7 +57,7 @@ describe('calculator.ts', () => {
       [1, 'b'],
       ['a', 'b'],
     ])('should throw TypeError when `%s` and `%s` are multiplied', (a: any, b: any) => {
-      expect(() => calculator.multiply(a, b)).toThrow(TypeError);
+      expect(() => Calculator.multiply(a, b)).toThrow(TypeError);
     });
 
     it.each([
@@ -65,7 +65,7 @@ describe('calculator.ts', () => {
       [-2, 3, -6],
       [1.5, 2, 3],
     ])('should multiply `%d` and `%d` to yied `%d`', (a, b, expected) => {
-      expect(calculator.multiply(a, b)).toBe(expected);
+      expect(Calculator.multiply(a, b)).toBe(expected);
     });
   });
 
@@ -76,7 +76,7 @@ describe('calculator.ts', () => {
       [TypeError.name, 'a', 'b', TypeError],
       [DivideByZeroError.name, 1, 0, DivideByZeroError],
     ])('should throw %s when `%s` is divided by `%s`', (_exceptionName, a: any, b: any, expected) => {
-      expect(() => calculator.divide(a, b)).toThrow(expected);
+      expect(() => Calculator.divide(a, b)).toThrow(expected);
     });
 
     it.each([
@@ -86,7 +86,7 @@ describe('calculator.ts', () => {
       [-6, -3, 2],
       [1.5, 0.5, 3],
     ])('should divide `%s` by `%s` to yield `%s`', (a: any, b: any, expected) => {
-      expect(calculator.divide(a, b)).toBe(expected);
+      expect(Calculator.divide(a, b)).toBe(expected);
     });
   });
 });
